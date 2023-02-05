@@ -59,6 +59,7 @@
 #include "caja-metadata.h"
 #include "caja-file-utilities.h"
 #include "caja-file-changes-queue.h"
+#include "caja-global-preferences.h"
 
 static const GtkTargetEntry drag_types [] =
 {
@@ -1927,6 +1928,43 @@ drag_data_received_callback (GtkWidget *widget,
 
 }
 
+static void
+caja_icon_dnd_block_dnd (CajaIconContainer *container)
+{
+    g_signal_handlers_block_by_func (container, G_CALLBACK (drag_begin_callback), NULL);
+    g_signal_handlers_block_by_func (container, G_CALLBACK (drag_data_get_callback), NULL);
+    g_signal_handlers_block_by_func (container, G_CALLBACK (drag_end_callback), NULL);
+    g_signal_handlers_block_by_func (container, G_CALLBACK (drag_data_received_callback), NULL);
+    g_signal_handlers_block_by_func (container, G_CALLBACK (drag_motion_callback), NULL);
+    g_signal_handlers_block_by_func (container, G_CALLBACK (drag_drop_callback), NULL);
+    g_signal_handlers_block_by_func (container, G_CALLBACK (drag_leave_callback), NULL);
+}
+
+static void
+caja_icon_dnd_unblock_dnd (CajaIconContainer *container)
+{
+    g_signal_handlers_unblock_by_func (container, G_CALLBACK (drag_begin_callback), NULL);
+    g_signal_handlers_unblock_by_func (container, G_CALLBACK (drag_data_get_callback), NULL);
+    g_signal_handlers_unblock_by_func (container, G_CALLBACK (drag_end_callback), NULL);
+    g_signal_handlers_unblock_by_func (container, G_CALLBACK (drag_data_received_callback), NULL);
+    g_signal_handlers_unblock_by_func (container, G_CALLBACK (drag_motion_callback), NULL);
+    g_signal_handlers_unblock_by_func (container, G_CALLBACK (drag_drop_callback), NULL);
+    g_signal_handlers_unblock_by_func (container, G_CALLBACK (drag_leave_callback), NULL);
+}
+
+static void
+disable_dnd_handler (GSettings   *settings,
+                     const gchar *key,
+                     gpointer     instance)
+{
+    CajaIconContainer *container;
+    container = (CajaIconContainer *)instance;
+
+    g_settings_get_boolean (caja_preferences, CAJA_PREFERENCES_DISABLE_DRAG_AND_DROP)
+        ? caja_icon_dnd_block_dnd (container)
+        : caja_icon_dnd_unblock_dnd (container);
+}
+
 void
 caja_icon_dnd_init (CajaIconContainer *container)
 {
@@ -1975,6 +2013,14 @@ caja_icon_dnd_init (CajaIconContainer *container)
                       G_CALLBACK (drag_drop_callback), NULL);
     g_signal_connect (container, "drag_leave",
                       G_CALLBACK (drag_leave_callback), NULL);
+
+    if (g_settings_get_boolean(caja_preferences, CAJA_PREFERENCES_DISABLE_DRAG_AND_DROP)) {
+        caja_icon_dnd_block_dnd(container);
+    }
+
+    g_signal_connect (caja_preferences, "changed::" CAJA_PREFERENCES_DISABLE_DRAG_AND_DROP,
+                      G_CALLBACK (disable_dnd_handler), container);
+
 }
 
 void
