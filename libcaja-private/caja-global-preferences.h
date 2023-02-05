@@ -74,6 +74,7 @@ G_BEGIN_DECLS
 #define CAJA_PREFERENCES_MOUSE_USE_EXTRA_BUTTONS 	"mouse-use-extra-buttons"
 #define CAJA_PREFERENCES_MOUSE_FORWARD_BUTTON		"mouse-forward-button"
 #define CAJA_PREFERENCES_MOUSE_BACK_BUTTON		"mouse-back-button"
+#define CAJA_PREFERENCES_DISABLE_DRAG_AND_DROP  "disable-drag-and-drop"
 
 typedef enum
 {

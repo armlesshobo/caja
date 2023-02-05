@@ -124,6 +124,11 @@
       <summary>When to show number of items in a folder</summary>
       <description>Speed tradeoff for when to show the number of items in a  folder. If set to "always" then always show item counts,  even if the folder is on a remote server.  If set to "local-only" then only show counts for local file systems. If set to "never" then never bother to compute item counts.</description>
     </key>
+    <key name="disable-drag-and-drop" type="b">
+      <default>false</default>
+      <summary>Disable drag and drop</summary>
+      <description>Whether to disable drag and drop functionality.</description>
+    </key>
     <key name="click-policy" enum="org.mate.caja.ClickPolicy">
       <default>'double'</default>
       <summary>Type of click used to launch/open files</summary>

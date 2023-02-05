@@ -73,6 +73,7 @@
 #define CAJA_FILE_MANAGEMENT_PROPERTIES_MEDIA_AUTORUN_NEVER "media_autorun_never_checkbutton"
 #define CAJA_FILE_MANAGEMENT_PROPERTIES_USE_IEC_UNITS_WIDGET "use_iec_units"
 #define CAJA_FILE_MANAGEMENT_PROPERTIES_SHOW_ICONS_IN_LIST_VIEW "show_icons_in_list_view"
+#define CAJA_FILE_MANAGEMENT_PROPERTIES_DISABLE_DRAG_AND_DROP "disable_drag_and_drop_checkbutton"
 
 /* int enums */
 #define CAJA_FILE_MANAGEMENT_PROPERTIES_THUMBNAIL_LIMIT_WIDGET "preview_image_size_combobox"
@@ -1142,7 +1143,9 @@ caja_file_management_properties_dialog_setup (GtkBuilder *builder, GtkWindow *wi
     bind_builder_bool (builder, caja_tree_sidebar_preferences,
                        CAJA_FILE_MANAGEMENT_PROPERTIES_TREE_VIEW_FOLDERS_WIDGET,
                        CAJA_PREFERENCES_TREE_SHOW_ONLY_DIRECTORIES);
-
+    bind_builder_bool (builder, caja_preferences,
+                       CAJA_FILE_MANAGEMENT_PROPERTIES_DISABLE_DRAG_AND_DROP,
+                       CAJA_PREFERENCES_DISABLE_DRAG_AND_DROP);
     bind_builder_bool (builder, caja_preferences,
                        CAJA_FILE_MANAGEMENT_PROPERTIES_USE_IEC_UNITS_WIDGET,
                        CAJA_PREFERENCES_USE_IEC_UNITS);
